@@ -1,6 +1,7 @@
 # The Expxorcist: Nonparametric Graphical Models Via Conditional Exponential Densities
 
 ===========================================
+
 List of directories:
 
 1) algorithm/ : contains the main code for learning expxorcist
@@ -10,5 +11,6 @@ List of directories:
 
 
 ============================================
+
 run.m - a sample script showing how to run the program 
 
