@@ -18,8 +18,9 @@ function v = gradl(psi, s, opt_s, params, args)
         
         % derivative of log normalization constant
         psi_s = args.grid_basis_matrix;
-        
-        y = exp(bsxfun(@plus, (psi_s*params(s,:)')*fns', args.grid_base_measure'));
+        y = bsxfun(@plus, (psi_s*params(s,:)')*fns', args.grid_base_measure');
+        maxy = max(y, [], 1);
+        y = exp(bsxfun(@minus, y, maxy));
         dens = trapz(args.grid, y)';
         
         nums = zeros(n, d);
@@ -32,12 +33,12 @@ function v = gradl(psi, s, opt_s, params, args)
     else
         % derivative of log normalization constant
         fs_tmp = args.grid_basis_matrix*params(s,:)';
-        y = exp(bsxfun(@plus, fs_tmp*fns', args.grid_base_measure'));
+        y = bsxfun(@plus, fs_tmp*fns', args.grid_base_measure');
+        maxy = max(y, [], 1);
+        y = exp(bsxfun(@minus, y, maxy));
         
         dens = trapz(args.grid, y)';
         tmps = trapz(args.grid, bsxfun(@times, y, fs_tmp))'./dens;
-        
-        % TODO: convert this to array operations
         v = zeros(size(params));
         for t = 1 : size(params,1)
             if t == s
